@@ -46,7 +46,7 @@ h1, h2, h3, h4 {
     color: #ffffff;
     float: right;
     font-size: 26pt;
-    margin-right: 20px;
+    margin: 15px;
 }
 
 .post {
