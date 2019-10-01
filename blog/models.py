@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from taggit.managers import TaggableManager
 
 
 class PublishedManager(models.Manager):
@@ -16,6 +17,7 @@ class Post(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True)
     published_date = models.DateTimeField(blank=True, null=True)
+    tags = TaggableManager()
 
     objects = models.Manager()
     published_posts = PublishedManager()
@@ -43,4 +45,4 @@ class Comment(models.Model):
         self.save()
 
     def __str__(self):
-        return self.text
+        return f'Comment by {self.author} on {self.post}'

@@ -2,12 +2,19 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from taggit.models import Tag
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
 
 
-def post_list(request):
+def post_list(request, tag_slug=None):
     object_list = Post.published_posts.all()
+    tag = None
+
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        object_list = object_list.filter(tags__in=[tag])
+
     paginator = Paginator(object_list, 3) # 3 posts per page
     page = request.GET.get('page')
     try:
@@ -16,7 +23,7 @@ def post_list(request):
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
-    return render(request, 'blog/post_list.html', {'page': page, 'posts': posts})
+    return render(request, 'blog/post_list.html', {'page': page, 'posts': posts, 'tag': tag})
 
 
 def post_detail(request, pk):
