@@ -27,9 +27,12 @@
         </div>
         <div class="content container">
             <div class="row">
-                <div class="col-md-8">
-                {% block content %}
-                {% endblock %}
+                <div id="content-part" class="col-md-8">
+                {% block content %}{% endblock %}
+                </div>
+                <div id="sidebar" class="col-md-4">
+                    <h2>My blog</h2>
+                    <p>This is my blog.</p>
                 </div>
             </div>
         </div>

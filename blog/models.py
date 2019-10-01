@@ -3,12 +3,22 @@ from django.conf import settings
 from django.utils import timezone
 
 
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(published_date__lte=timezone.now()).\
+            order_by('published_date')
+
+
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(auto_now=True)
     published_date = models.DateTimeField(blank=True, null=True)
+
+    objects = models.Manager()
+    published_posts = PublishedManager()
 
     def publish(self):
         self.published_date = timezone.now()

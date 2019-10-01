@@ -23,7 +23,7 @@ body {
 
 .content {
     padding-top: 20px;
-    margin-left: 50px;
+    margin-left: 30px;
 }
 
 h1, h2, h3, h4 {
@@ -72,3 +72,13 @@ hr {
 .comment {
     margin: 20px 0px 20px 20px;
 }
+
+#content-part {
+
+}
+
+#sidebar {
+    background-color: #aaaaaa;
+    height: 100%;
+}
+
