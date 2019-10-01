@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Поиск{% endblock %}
+
+{% block content %}
+    {% if query %}
+    <h1>Посты, содержащие "{{ query }}":</h1>
+    <h4>
+        {% with results.count as total_results %}
+        Найдено записей: {{ total_results }}
+        {% endwith %}
+    </h4>
+    {% for post in results %}
+        <h4><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h4>
+        {{ post.text|truncatewords:10 }}
+    {% empty %}
+        <p>Нет результатов по вашему запросу.</p>
+    {% endfor %}
+    <p>
+        <a href="{% url 'post_search' %}">Искать ещё</a>
+    </p>
+    {% else %}
+        <h1>Поиск по записям:</h1>
+        <form action="." method="get">
+        <label for='{{ form.query }}'> Поиск:</label>
+        {{ form.query }}
+        <input type="submit" value="Найти">
+        </form>
+    {% endif %}
+{% endblock %}

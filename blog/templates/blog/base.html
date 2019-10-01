@@ -1,3 +1,4 @@
+{% load blog_tags %}
 {% load static %}
 <html lang="ru">
     <head>
@@ -23,6 +24,9 @@
                 <i class="fas fa-sign-in-alt"></i>
             </a>
             {% endif %}
+            <a href="{% url 'post_search' %}" class="top-menu">
+                <i class="fas fa-search"></i>
+            </a>
             <h1><a href="/">Django Girls Blog</a></h1>
         </div>
         <div class="content container">
@@ -31,8 +35,21 @@
                 {% block content %}{% endblock %}
                 </div>
                 <div id="sidebar" class="col-md-4">
-                    <h2>My blog</h2>
-                    <p>This is my blog.</p>
+                    <h2>Мой блог</h2>
+                    <p>Всего записей: {% total_posts %} </p>
+                    <h3>Последние:</h3>
+                    {% show_latest_posts 3 %}
+                    <h3>Наиболее популярные:</h3>
+                    {% get_most_commented_posts as most_commented_posts %}
+                    <ul>
+                        {% for post in most_commented_posts %}
+                        <li>
+                            <a href="{% url 'post_detail' pk=post.pk %}">
+                                {{ post.title }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
