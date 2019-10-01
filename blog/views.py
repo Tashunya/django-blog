@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Count
 from taggit.models import Tag
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
@@ -28,7 +29,16 @@ def post_list(request, tag_slug=None):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post': post})
+    # all tags of current post
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    # all posts with at least one tag of post_tags_ids excluding current post
+    similar_posts = Post.published_posts.filter(tags__in=post_tags_ids).exclude(id=post.id)
+    # count number of same tags, sort list and slice first 4 posts
+    similar_posts = similar_posts.annotate(same_tags=Count('tags')).\
+        order_by('-same_tags', '-published_date')[:4]
+    return render(request, 'blog/post_detail.html',
+                  {'post': post,
+                   'similar_posts': similar_posts})
 
 
 @login_required
@@ -64,7 +74,7 @@ def post_edit(request, pk):
 
 @login_required
 def post_draft_list(request):
-    posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
+    posts = Post.draft_posts.all()
     return render(request, 'blog/post_draft_list.html', {'posts': posts})
 
 

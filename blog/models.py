@@ -10,6 +10,12 @@ class PublishedManager(models.Manager):
             order_by('published_date')
 
 
+class DraftManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(published_date__isnull=True).\
+            order_by('created_date')
+
+
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
@@ -21,6 +27,7 @@ class Post(models.Model):
 
     objects = models.Manager()
     published_posts = PublishedManager()
+    draft_posts = DraftManager()
 
     def publish(self):
         self.published_date = timezone.now()
