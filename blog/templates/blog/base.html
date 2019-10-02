@@ -47,6 +47,9 @@
                 <div id="sidebar" class="col-md-4">
                     <h2>Мой блог</h2>
                     <p>Всего записей: {% total_posts %} </p>
+                    <p><a href="{% url 'edit' %}">Редактировать учетную запись</a></p>
+                    <p><a href="{% url 'password_change' %}">Сменить пароль</a></p>
+                    <hr>
                     <h3>Последние:</h3>
                     {% show_latest_posts 3 %}
                     <h3>Наиболее популярные:</h3>

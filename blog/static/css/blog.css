@@ -78,7 +78,7 @@ hr {
 }
 
 #sidebar {
-    background-color: #aaaaaa;
+    background-color: #dbdbdb;
     height: 100%;
 }
 
@@ -121,4 +121,58 @@ ul.messages li a.close {
     border:0;
     box-shadow:none;
     text-shadow:none;
+}
+
+/* forms */
+form {
+    overflow:auto;
+}
+
+form p {
+    width:100%;
+    overflow:auto;
+}
+
+label {
+    float:left;
+    clear:both;
+    color:#333;
+    margin-bottom:4px;
+}
+input, textarea {
+    clear:both;
+    float:left;
+    margin:0 0 10px;
+    background:#efefef;
+    border:0;
+    padding:6px 10px;
+    font-size:14px;
+}
+input[type=submit], a.button {
+    font-weight:bold;
+    background:#ff9400;
+    color:#fff;
+    padding:10px 20px;
+    border: 1px;
+    border-radius: 0.3rem;
+    font-size:14px;
+    text-transform:uppercase;
+}
+
+input[type=submit]:hover {
+    background: #E27A06;
+}
+
+.errorlist {
+    color:#cc0033;
+    float:left;
+    clear:both;
+    padding-left:10px;
+}
+.helptext {
+    margin:0 0 20px 0;
+    color:#aaa;
+    clear:both;
+    float:left;
+    font-size:13px;
 }
