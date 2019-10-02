@@ -6,8 +6,9 @@ register = template.Library()
 
 
 @register.simple_tag
-def total_posts():
-    return Post.published_posts.count()
+def total_posts(user):
+    #return Post.published_posts.count()
+    return Post.published_posts.filter(author=user).count()
 
 
 @register.inclusion_tag('blog/post/latest_posts.html')

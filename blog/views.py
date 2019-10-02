@@ -19,7 +19,7 @@ def post_list(request, tag_slug=None):
         tag = get_object_or_404(Tag, slug=tag_slug)
         object_list = object_list.filter(tags__in=[tag])
 
-    paginator = Paginator(object_list, 3) # 3 posts per page
+    paginator = Paginator(object_list, 3)  # 3 posts per page
     page = request.GET.get('page')
     try:
         posts = paginator.page(page)
@@ -91,6 +91,9 @@ def post_new(request):
 @login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    if request.user != post.author:
+        messages.info(request, 'You cant do that')
+        return render(request, 'blog/post_detail.html',  {'post': post})
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
@@ -106,8 +109,23 @@ def post_edit(request, pk):
 
 
 @login_required
+def user_posts(request):
+    object_list = Post.published_posts.filter(author=request.user)
+    paginator = Paginator(object_list, 3)  # 3 posts per page
+    page = request.GET.get('page')
+
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'blog/user_posts.html', {'page': page, 'posts': posts})
+
+
+@login_required
 def post_draft_list(request):
-    posts = Post.draft_posts.all()
+    posts = Post.draft_posts.filter(author=request.user)
     return render(request, 'blog/post_draft_list.html', {'posts': posts})
 
 
@@ -122,9 +140,12 @@ def post_publish(request, pk):
 @login_required
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    post.delete()
-    messages.success(request, 'Запись удалена')
-    return redirect('post_list')
+    if request.user == post.author:
+        post.delete()
+        messages.success(request, 'Запись удалена')
+        return redirect('post_list')
+    else:
+        return "You can't do that!"
 
 
 def add_comment_to_post(request, pk):

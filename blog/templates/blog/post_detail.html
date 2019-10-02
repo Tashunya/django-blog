@@ -10,12 +10,14 @@
     {% else %}
         <a class="btn btn-warning" href="{% url 'post_publish' pk=post.pk %}">Опубликовать</a>
     {% endif %}
+    {% if user == post.author %}
     <a class="btn btn-warning" href="{% url 'post_edit' pk=post.pk %}">
         <i class="fas fa-pen"></i>
     </a>
     <a class="btn btn-danger" href="{% url 'post_remove' pk=post.pk %}">
         <i class="far fa-trash-alt"></i>
     </a>
+    {% endif %}
     {% endif %}
     <h1>{{ post.title }}</h1>
     <p class="tags">

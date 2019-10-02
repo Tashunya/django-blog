@@ -19,6 +19,9 @@
             <a href="{% url 'post_new' %}" class="top-menu">
                 <i class="fas fa-plus"></i>
             </a>
+            <a href="{% url 'user_posts' %}" class="top-menu">
+                <i class="fas fa-user"></i>
+            </a>
             {% else %}
             <a href="{% url 'login' %}" class="top-menu">
                 <i class="fas fa-sign-in-alt"></i>
@@ -46,7 +49,7 @@
                 </div>
                 <div id="sidebar" class="col-md-4">
                     <h2>Мой блог</h2>
-                    <p>Всего записей: {% total_posts %} </p>
+                    <p>Всего записей: {% total_posts user %} </p>
                     <p><a href="{% url 'edit' %}">Редактировать учетную запись</a></p>
                     <p><a href="{% url 'password_change' %}">Сменить пароль</a></p>
                     <hr>
