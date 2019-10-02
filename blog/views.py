@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
-from django.contrib.postgres.search import SearchVector
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models import Count
 from taggit.models import Tag
 from .models import Post, Comment
@@ -50,8 +51,21 @@ def post_search(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            results = Post.objects.annotate(search=SearchVector('title', 'text'),).\
-                filter(search=query)
+
+            # weight: A = 1 B = 0.4 C = 0.2 D = 0.1
+            search_vector = SearchVector('title', weight='A') + SearchVector('text', weight='B')
+            search_query = SearchQuery(query)
+
+            # Using field ranks (>= 0.3)
+            # results = Post.objects.annotate(
+            #     search=search_vector, rank=SearchRank(search_vector, search_query)).\
+            #     filter(rank__gte=0.3).order_by('-rank')
+
+            # Using trigram
+            results = Post.objects.annotate(
+                similarity=TrigramSimilarity('title', query),
+            ).filter(similarity__gt=0.3).order_by('-similarity')
+
     return render(request, 'blog/post/search.html', {'form': form,
                                                      'query': query,
                                                      'results': results})
