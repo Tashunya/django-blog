@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -80,6 +81,7 @@ def post_new(request):
             post.author = request.user
             post.published_date = timezone.now()
             post.save()
+            messages.success(request, 'Запись создана')
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm()
@@ -96,6 +98,7 @@ def post_edit(request, pk):
             post.author = request.user
             post.published_date = timezone.now()
             post.save()
+            messages.success(request, 'Запись изменена')
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
@@ -112,6 +115,7 @@ def post_draft_list(request):
 def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.publish()
+    messages.success(request, 'Запись опубликована')
     return redirect('post_detail', pk=pk)
 
 
@@ -119,6 +123,7 @@ def post_publish(request, pk):
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
+    messages.success(request, 'Запись удалена')
     return redirect('post_list')
 
 

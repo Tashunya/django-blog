@@ -7,13 +7,13 @@ from taggit.managers import TaggableManager
 class PublishedManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(published_date__lte=timezone.now()).\
-            order_by('published_date')
+            order_by('-published_date')
 
 
 class DraftManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(published_date__isnull=True).\
-            order_by('created_date')
+            order_by('-created_date')
 
 
 class Post(models.Model):

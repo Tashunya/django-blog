@@ -1,4 +1,3 @@
-{% load blog_tags %}
 {% load static %}
 <html lang="ru">
     <head>
@@ -45,21 +44,7 @@
                 {% block content %}{% endblock %}
                 </div>
                 <div id="sidebar" class="col-md-4">
-                    <h2>Мой блог</h2>
-                    <p>Всего записей: {% total_posts %} </p>
-                    <h3>Последние:</h3>
-                    {% show_latest_posts 3 %}
-                    <h3>Наиболее популярные:</h3>
-                    {% get_most_commented_posts as most_commented_posts %}
-                    <ul>
-                        {% for post in most_commented_posts %}
-                        <li>
-                            <a href="{% url 'post_detail' pk=post.pk %}">
-                                {{ post.title }}
-                            </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                {% block sidebar %}{% endblock %}
                 </div>
             </div>
         </div>
