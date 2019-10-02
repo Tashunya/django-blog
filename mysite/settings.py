@@ -25,7 +25,7 @@ SECRET_KEY = 'vnus!-#3%w2=*7qld$3u*b&fp9lhtm7u$=o3($gsubw6saf*_p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.pythonanywhere.com']
+ALLOWED_HOSTS = ['mysite.com', '127.0.0.1', 'localhost', '.pythonanywhere.com']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'social_django',
     'blog',
     'taggit',
 ]
@@ -107,6 +108,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'account.authentication.EmailAuthBackend',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -133,3 +142,6 @@ LOGOUT_URL = 'logout'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
