@@ -6,6 +6,7 @@ from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.postgres.search import TrigramSimilarity
 from django.db.models import Count
+
 from taggit.models import Tag
 from .models import Post, Comment
 from .forms import PostForm, CommentForm, SearchForm
@@ -92,8 +93,8 @@ def post_new(request):
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.user != post.author:
-        messages.info(request, 'You cant do that')
-        return render(request, 'blog/post_detail.html',  {'post': post})
+        messages.info(request, 'You can\'t do that')
+        return redirect('post_list')
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
@@ -132,9 +133,13 @@ def post_draft_list(request):
 @login_required
 def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    post.publish()
-    messages.success(request, 'Запись опубликована')
-    return redirect('post_detail', pk=pk)
+    if request.user == post.author:
+        post.publish()
+        messages.success(request, 'Запись опубликована')
+        return redirect('post_detail', pk=pk)
+    else:
+        messages.info(request, 'You can\'t do that!')
+        return redirect('post_detail', pk=pk)
 
 
 @login_required
@@ -145,7 +150,8 @@ def post_remove(request, pk):
         messages.success(request, 'Запись удалена')
         return redirect('post_list')
     else:
-        return "You can't do that!"
+        messages.info(request, 'You can\'t do that!')
+        return redirect('post_detail', pk=pk)
 
 
 def add_comment_to_post(request, pk):
@@ -165,12 +171,20 @@ def add_comment_to_post(request, pk):
 @login_required
 def comment_approve(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
-    comment.approve()
-    return redirect('post_detail', pk=comment.post.pk)
+    if comment.post.author == request.user:
+        comment.approve()
+        return redirect('post_detail', pk=comment.post.pk)
+    else:
+        messages.info(request, 'You can\'t do that!')
+        return redirect('post_detail', pk=comment.post.pk)
 
 
 @login_required
 def comment_remove(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
-    comment.delete()
-    return redirect('post_detail', pk=comment.post.pk)
+    if comment.post.author == request.user:
+        comment.delete()
+        return redirect('post_detail', pk=comment.post.pk)
+    else:
+        messages.info(request, 'You can\'t do that!')
+        return redirect('post_detail', pk=comment.post.pk)

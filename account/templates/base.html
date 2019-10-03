@@ -12,11 +12,11 @@
             <a href="{% url 'logout' %}" class="top-menu">
                 <i class="fas fa-sign-out-alt"></i>
             </a>
-            <a href="{% url 'post_draft_list' %}" class="top-menu">
-                <i class="far fa-edit"></i>
-            </a>
             <a href="{% url 'post_new' %}" class="top-menu">
                 <i class="fas fa-plus"></i>
+            </a>
+            <a href="{% url 'user_posts' %}" class="top-menu">
+                <i class="fas fa-user"></i>
             </a>
             {% else %}
             <a href="{% url 'login' %}" class="top-menu">

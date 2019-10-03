@@ -38,7 +38,7 @@
             {% if user.is_authenticated or comment.approved_comment %}
             <div class="comment">
                 <div class="date">{{ comment.created_date }}</div>
-                {% if not comment.approved_comment %}
+                {% if not comment.approved_comment and user == comment.post.author %}
                     <a class="btn btn-warning" href="{% url 'comment_approve' pk=comment.pk %}">
                         <i class="far fa-check-circle"></i>
                     </a>
@@ -49,7 +49,7 @@
                 <strong>{{ comment.author }}</strong>
                 <p>{{ comment.text|linebreaks}}</p>
             </div>
-            {%  endif %}
+            {% endif %}
         {% empty %}
             <p>No comments here yet :(</p>
         {% endfor %}

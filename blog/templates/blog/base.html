@@ -13,9 +13,6 @@
             <a href="{% url 'logout' %}" class="top-menu">
                 <i class="fas fa-sign-out-alt"></i>
             </a>
-            <a href="{% url 'post_draft_list' %}" class="top-menu">
-                <i class="far fa-edit"></i>
-            </a>
             <a href="{% url 'post_new' %}" class="top-menu">
                 <i class="fas fa-plus"></i>
             </a>
@@ -47,6 +44,7 @@
                 <div id="content-part" class="col-md-8">
                 {% block content %}{% endblock %}
                 </div>
+                {% if user.is_authenticated %}
                 <div id="sidebar" class="col-md-4">
                     <h2>Мой блог</h2>
                     <p>Всего записей: {% total_posts user %} </p>
@@ -67,6 +65,7 @@
                         {% endfor %}
                     </ul>
                 </div>
+                {% endif %}
             </div>
         </div>
     </body>
