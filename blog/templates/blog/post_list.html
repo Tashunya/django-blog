@@ -10,6 +10,7 @@
             <p>Опубликовано: {{ post.published_date }}</p>
         </div>
         <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+        <p>Автор: <a href="{% url 'post_detail' pk=post.pk %}">{{ post.author }}</a></p>
         <p class="tags">
             Tags:
                 {% for tag in post.tags.all %}

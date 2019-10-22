@@ -178,7 +178,10 @@ input[type=submit]:hover {
 
 /* social-auth */
 .social {
-    float:right;
+    float: left;
+}
+.social ul {
+    padding-inline-start: 0;
 }
 .social li {
     list-style:none;
