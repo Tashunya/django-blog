@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['mysite.com', '127.0.0.1', 'localhost', '.pythonanywhere.com']
 
@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.postgres',
     'social_django',
     'blog',
     'taggit',
@@ -84,14 +83,6 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
-    # 'psql': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'djangogirls',
-    #     'USER': 'djangogirls',
-    #     'PASSWORD': 'djangogirls',
-    #     'HOST': 'localhost',
-    #     'PORT': '5432',
-    # }
 }
 
 
