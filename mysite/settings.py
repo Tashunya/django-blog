@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'vnus!-#3%w2=*7qld$3u*b&fp9lhtm7u$=o3($gsubw6saf*_p'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -81,13 +81,17 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'djangogirls',
-        'USER': 'djangogirls',
-        'PASSWORD': 'djangogirls',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+    # 'psql': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'djangogirls',
+    #     'USER': 'djangogirls',
+    #     'PASSWORD': 'djangogirls',
+    #     'HOST': 'localhost',
+    #     'PORT': '5432',
+    # }
 }
 
 
@@ -113,8 +117,8 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'account.authentication.EmailAuthBackend',
     'social_core.backends.google.GoogleOAuth2',
-    'social_core.backends.facebook.FacebookAppOAuth2',
-    'social_core.backends.twitter.TwitterOAuth',
+    # 'social_core.backends.facebook.FacebookAppOAuth2',
+    # 'social_core.backends.twitter.TwitterOAuth',
 ]
 
 
