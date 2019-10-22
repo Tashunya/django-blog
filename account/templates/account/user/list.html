@@ -8,7 +8,7 @@
     {% for user in users %}
       <div class="user">
         <div class="info">
-          <a href="{{ user.get_absolute_url }}" class="title">
+          <a href="{% url 'user_detail' username=user %}" class="title">
             {{ user.get_full_name }}
           </a>
         </div>

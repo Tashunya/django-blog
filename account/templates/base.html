@@ -15,7 +15,7 @@
             <a href="{% url 'post_new' %}" class="top-menu">
                 <i class="fas fa-plus"></i>
             </a>
-            <a href="{% url 'user_posts' %}" class="top-menu">
+            <a href="{% url 'user_detail' username=user  %}" class="top-menu">
                 <i class="fas fa-user"></i>
             </a>
             {% else %}

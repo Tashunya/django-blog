@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import UserRegistrationForm, UserEditForm, ProfileEditForm
 from .models import Profile
+from blog.models import Post
 
 
 # def user_login(request):
@@ -69,6 +71,18 @@ def user_list(request):
 @login_required
 def user_detail(request, username):
     user = get_object_or_404(User, username=username, is_active=True)
+    posts = Post.published_posts.filter(author=user)
+    paginator = Paginator(posts, 3)  # 3 posts per page
+    page = request.GET.get('page')
+
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
     return render(request, 'account/user/detail.html',
                   {'section': 'people',
-                   'user': user})
+                   'user': user,
+                   'posts': posts,
+                   'page': page})

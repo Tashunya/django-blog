@@ -19,6 +19,8 @@
       {{ form.as_p }}
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ next }}" />
+
+      <p><input type="submit" value="Войти"></p>
       <div class="social">
       <ul>
         <li class="facebook"><a href="">Sign in with Facebook</a></li>
@@ -26,7 +28,6 @@
         <li class="google"><a href="{% url "social:begin" "google-oauth2" %}">Login with Google</a></li>
       </ul>
       </div>
-      <p><input type="submit" value="Войти"></p>
     </form>
   <p><a href="{% url "password_reset" %}">Забыли пароль?</a></p>
   </div>

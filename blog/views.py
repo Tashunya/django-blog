@@ -110,21 +110,6 @@ def post_edit(request, pk):
 
 
 @login_required
-def user_posts(request):
-    object_list = Post.published_posts.filter(author=request.user)
-    paginator = Paginator(object_list, 3)  # 3 posts per page
-    page = request.GET.get('page')
-
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
-    return render(request, 'blog/user_posts.html', {'page': page, 'posts': posts})
-
-
-@login_required
 def post_draft_list(request):
     posts = Post.draft_posts.filter(author=request.user)
     return render(request, 'blog/post_draft_list.html', {'posts': posts})
